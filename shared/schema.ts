@@ -2,17 +2,22 @@ import { pgTable, text, serial, integer, boolean, timestamp, json, varchar, nume
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
+// Role enum
+export const userRoleEnum = pgEnum('user_role', ['admin', 'customer', 'guest']);
+
 // User schema
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
-  role: text("role").notNull().default("customer"),
+  role: userRoleEnum("role").notNull().default('customer'),
   firstName: text("first_name"),
   lastName: text("last_name"),
   email: text("email"),
   phone: text("phone"),
+  lastLogin: timestamp("last_login"),
   createdAt: timestamp("created_at").defaultNow(),
+  active: boolean("active").default(true),
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
@@ -23,6 +28,13 @@ export const insertUserSchema = createInsertSchema(users).pick({
   lastName: true,
   email: true,
   phone: true,
+  active: true,
+});
+
+// Login schema for admin
+export const loginSchema = z.object({
+  username: z.string().min(3, "Username must be at least 3 characters"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
 // Product schema
@@ -254,3 +266,27 @@ export type OrderType = typeof orders.$inferSelect;
 
 export type InsertOrderItem = z.infer<typeof insertOrderItemSchema>;
 export type OrderItemType = typeof orderItems.$inferSelect;
+
+// Media uploads schema
+export const mediaUploads = pgTable("media_uploads", {
+  id: serial("id").primaryKey(),
+  filename: text("filename").notNull(),
+  originalName: text("original_name").notNull(),
+  mimeType: text("mime_type").notNull(),
+  size: integer("size").notNull(),
+  path: text("path").notNull(),
+  uploadedBy: integer("uploaded_by"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const insertMediaSchema = createInsertSchema(mediaUploads).pick({
+  filename: true,
+  originalName: true,
+  mimeType: true,
+  size: true,
+  path: true,
+  uploadedBy: true,
+});
+
+export type InsertMedia = z.infer<typeof insertMediaSchema>;
+export type MediaType = typeof mediaUploads.$inferSelect;

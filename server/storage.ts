@@ -7,7 +7,8 @@ import {
   TestimonialType, InsertTestimonial, testimonials,
   SlideType, InsertSlide, slides,
   OrderType, InsertOrder, orders,
-  OrderItemType, InsertOrderItem, orderItems
+  OrderItemType, InsertOrderItem, orderItems,
+  MediaType, InsertMedia, mediaUploads
 } from "@shared/schema";
 import { sampleData } from "../client/src/lib/data";
 
@@ -17,6 +18,11 @@ export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  updateUser(id: number, user: Partial<InsertUser>): Promise<User | undefined>;
+  deleteUser(id: number): Promise<boolean>;
+  getAllUsers(): Promise<User[]>;
+  authenticateUser(username: string, password: string): Promise<User | null>;
+  updateLastLogin(id: number): Promise<User | undefined>;
   
   // Product methods
   getProducts(): Promise<ProductType[]>;
@@ -26,6 +32,8 @@ export interface IStorage {
   getRelatedProducts(id: number): Promise<ProductType[]>;
   getProductCategories(): Promise<string[]>;
   createProduct(product: InsertProduct): Promise<ProductType>;
+  updateProduct(id: number, product: Partial<InsertProduct>): Promise<ProductType | undefined>;
+  deleteProduct(id: number): Promise<boolean>;
   
   // Blog methods
   getBlogPosts(): Promise<BlogPostType[]>;
@@ -35,6 +43,8 @@ export interface IStorage {
   getRelatedBlogPosts(id: number): Promise<BlogPostType[]>;
   getBlogCategories(): Promise<string[]>;
   createBlogPost(post: InsertBlogPost): Promise<BlogPostType>;
+  updateBlogPost(id: number, post: Partial<InsertBlogPost>): Promise<BlogPostType | undefined>;
+  deleteBlogPost(id: number): Promise<boolean>;
   
   // Cart methods
   getCartItems(sessionId: string): Promise<CartItemType[]>;
@@ -48,20 +58,33 @@ export interface IStorage {
   // Review methods
   getReviews(productId: number): Promise<ReviewType[]>;
   createReview(review: InsertReview): Promise<ReviewType>;
+  deleteReview(id: number): Promise<boolean>;
   
   // Testimonial methods
   getTestimonials(): Promise<TestimonialType[]>;
   createTestimonial(testimonial: InsertTestimonial): Promise<TestimonialType>;
+  updateTestimonial(id: number, testimonial: Partial<InsertTestimonial>): Promise<TestimonialType | undefined>;
+  deleteTestimonial(id: number): Promise<boolean>;
   
   // Slide methods
   getSlides(): Promise<SlideType[]>;
   createSlide(slide: InsertSlide): Promise<SlideType>;
+  updateSlide(id: number, slide: Partial<InsertSlide>): Promise<SlideType | undefined>;
+  deleteSlide(id: number): Promise<boolean>;
   
   // Order methods
   createOrder(order: InsertOrder, items: InsertOrderItem[]): Promise<OrderType>;
   getOrderById(id: number): Promise<OrderType | undefined>;
   getUserOrders(userId: number): Promise<OrderType[]>;
   getOrderItems(orderId: number): Promise<OrderItemType[]>;
+  getAllOrders(): Promise<OrderType[]>;
+  updateOrderStatus(id: number, status: string): Promise<OrderType | undefined>;
+  
+  // Media uploads methods
+  createMedia(media: InsertMedia): Promise<MediaType>;
+  getMediaById(id: number): Promise<MediaType | undefined>;
+  getAllMedia(): Promise<MediaType[]>;
+  deleteMedia(id: number): Promise<boolean>;
 }
 
 export class MemStorage implements IStorage {
@@ -74,6 +97,7 @@ export class MemStorage implements IStorage {
   private slides: Map<number, SlideType>;
   private orders: Map<number, OrderType>;
   private orderItems: Map<number, OrderItemType>;
+  private mediaUploads: Map<number, MediaType>;
   
   private userIdCounter: number = 1;
   private productIdCounter: number = 1;
@@ -84,6 +108,7 @@ export class MemStorage implements IStorage {
   private slideIdCounter: number = 1;
   private orderIdCounter: number = 1;
   private orderItemIdCounter: number = 1;
+  private mediaIdCounter: number = 1;
 
   constructor() {
     this.users = new Map();
@@ -95,6 +120,7 @@ export class MemStorage implements IStorage {
     this.slides = new Map();
     this.orders = new Map();
     this.orderItems = new Map();
+    this.mediaUploads = new Map();
     
     // Initialize with sample data
     this.initSampleData();
@@ -396,6 +422,142 @@ export class MemStorage implements IStorage {
   async getOrderItems(orderId: number): Promise<OrderItemType[]> {
     return Array.from(this.orderItems.values())
       .filter(item => item.orderId === orderId);
+  }
+
+  // Additional User Methods
+  async updateUser(id: number, userData: Partial<InsertUser>): Promise<User | undefined> {
+    const user = this.users.get(id);
+    if (!user) return undefined;
+    
+    const updatedUser = { ...user, ...userData };
+    this.users.set(id, updatedUser);
+    return updatedUser;
+  }
+  
+  async deleteUser(id: number): Promise<boolean> {
+    return this.users.delete(id);
+  }
+  
+  async getAllUsers(): Promise<User[]> {
+    return Array.from(this.users.values());
+  }
+  
+  async authenticateUser(username: string, password: string): Promise<User | null> {
+    const user = await this.getUserByUsername(username);
+    if (!user) return null;
+    
+    // In a real app, we'd use bcrypt.compare here
+    if (user.password === password) {
+      return user;
+    }
+    
+    return null;
+  }
+  
+  async updateLastLogin(id: number): Promise<User | undefined> {
+    const user = this.users.get(id);
+    if (!user) return undefined;
+    
+    const updatedUser = { ...user, lastLogin: new Date() };
+    this.users.set(id, updatedUser);
+    return updatedUser;
+  }
+
+  // Additional Product Methods
+  async updateProduct(id: number, productData: Partial<InsertProduct>): Promise<ProductType | undefined> {
+    const product = this.products.get(id);
+    if (!product) return undefined;
+    
+    const updatedProduct = { ...product, ...productData };
+    this.products.set(id, updatedProduct);
+    return updatedProduct;
+  }
+  
+  async deleteProduct(id: number): Promise<boolean> {
+    return this.products.delete(id);
+  }
+
+  // Additional Blog Methods
+  async updateBlogPost(id: number, postData: Partial<InsertBlogPost>): Promise<BlogPostType | undefined> {
+    const post = this.blogPosts.get(id);
+    if (!post) return undefined;
+    
+    const updatedPost = { ...post, ...postData };
+    this.blogPosts.set(id, updatedPost);
+    return updatedPost;
+  }
+  
+  async deleteBlogPost(id: number): Promise<boolean> {
+    return this.blogPosts.delete(id);
+  }
+
+  // Additional Review Methods
+  async deleteReview(id: number): Promise<boolean> {
+    return this.reviews.delete(id);
+  }
+
+  // Additional Testimonial Methods
+  async updateTestimonial(id: number, testimonialData: Partial<InsertTestimonial>): Promise<TestimonialType | undefined> {
+    const testimonial = this.testimonials.get(id);
+    if (!testimonial) return undefined;
+    
+    const updatedTestimonial = { ...testimonial, ...testimonialData };
+    this.testimonials.set(id, updatedTestimonial);
+    return updatedTestimonial;
+  }
+  
+  async deleteTestimonial(id: number): Promise<boolean> {
+    return this.testimonials.delete(id);
+  }
+
+  // Additional Slide Methods
+  async updateSlide(id: number, slideData: Partial<InsertSlide>): Promise<SlideType | undefined> {
+    const slide = this.slides.get(id);
+    if (!slide) return undefined;
+    
+    const updatedSlide = { ...slide, ...slideData };
+    this.slides.set(id, updatedSlide);
+    return updatedSlide;
+  }
+  
+  async deleteSlide(id: number): Promise<boolean> {
+    return this.slides.delete(id);
+  }
+
+  // Additional Order Methods
+  async getAllOrders(): Promise<OrderType[]> {
+    return Array.from(this.orders.values())
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+  
+  async updateOrderStatus(id: number, status: string): Promise<OrderType | undefined> {
+    const order = this.orders.get(id);
+    if (!order) return undefined;
+    
+    const updatedOrder = { ...order, status };
+    this.orders.set(id, updatedOrder);
+    return updatedOrder;
+  }
+
+  // Media upload methods
+  async createMedia(media: InsertMedia): Promise<MediaType> {
+    const id = this.mediaIdCounter++;
+    const newMedia: MediaType = { ...media, id };
+    this.mediaUploads.set(id, newMedia);
+    return newMedia;
+  }
+  
+  async getMediaById(id: number): Promise<MediaType | undefined> {
+    return this.mediaUploads.get(id);
+  }
+  
+  async getAllMedia(): Promise<MediaType[]> {
+    return Array.from(this.mediaUploads.values())
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+  
+  async deleteMedia(id: number): Promise<boolean> {
+    return this.mediaUploads.delete(id);
   }
 }
 
