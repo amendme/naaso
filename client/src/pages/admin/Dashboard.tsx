@@ -239,7 +239,7 @@ const ProductsTab = ({ token }: { token: string }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {productsQuery.data && productsQuery.data.map((product: any) => (
+          {Array.isArray(productsQuery.data) && productsQuery.data.map((product: any) => (
             <TableRow key={product.id}>
               <TableCell>{product.id}</TableCell>
               <TableCell>
