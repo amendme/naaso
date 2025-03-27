@@ -1,64 +1,38 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { useQuery, useMutation } from "@tanstack/react-query";
-import { CartItemType } from "@shared/schema";
 import { Minus, Plus, Trash2, ShoppingBag, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { queryClient } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
+import { useCart } from "@/hooks/useCart";
 
 const Cart = () => {
   const [, navigate] = useLocation();
   const { toast } = useToast();
+  const { 
+    items: cartItems, 
+    isLoading, 
+    fetchCart, 
+    updateQuantity: updateCartQuantity, 
+    removeItem: removeCartItem 
+  } = useCart();
 
-  const { data: cartItems = [], isLoading } = useQuery<CartItemType[]>({
-    queryKey: ['/api/cart'],
-  });
-
-  const updateItemMutation = useMutation({
-    mutationFn: (data: { id: number; quantity: number }) => 
-      apiRequest('PATCH', `/api/cart/${data.id}`, { quantity: data.quantity }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/cart'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/cart/count'] });
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to update cart item. Please try again.",
-        variant: "destructive",
-      });
-    }
-  });
-
-  const removeItemMutation = useMutation({
-    mutationFn: (id: number) => apiRequest('DELETE', `/api/cart/${id}`, undefined),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/cart'] });
-      queryClient.invalidateQueries({ queryKey: ['/api/cart/count'] });
-      toast({
-        title: "Item Removed",
-        description: "The item has been removed from your cart.",
-      });
-    },
-    onError: () => {
-      toast({
-        title: "Error",
-        description: "Failed to remove item. Please try again.",
-        variant: "destructive",
-      });
-    }
-  });
+  // Fetch cart items when component mounts
+  useEffect(() => {
+    fetchCart();
+  }, [fetchCart]);
 
   const updateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return;
-    updateItemMutation.mutate({ id, quantity: newQuantity });
+    updateCartQuantity(id, newQuantity);
   };
 
   const removeItem = (id: number) => {
-    removeItemMutation.mutate(id);
+    removeCartItem(id);
+    toast({
+      title: "Item Removed",
+      description: "The item has been removed from your cart."
+    });
   };
 
   const calculateSubtotal = () => {
@@ -132,7 +106,6 @@ const Cart = () => {
                       <button 
                         className="text-sm text-red-500 flex items-center mt-1 hover:text-red-700"
                         onClick={() => removeItem(item.id)}
-                        disabled={removeItemMutation.isPending}
                       >
                         <Trash2 className="h-3 w-3 mr-1" />
                         Remove
@@ -151,7 +124,6 @@ const Cart = () => {
                     <button 
                       className="text-gray-500 focus:outline-none focus:text-primary"
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      disabled={updateItemMutation.isPending}
                     >
                       <Minus className="h-4 w-4" />
                     </button>
@@ -159,7 +131,6 @@ const Cart = () => {
                     <button 
                       className="text-gray-500 focus:outline-none focus:text-primary"
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      disabled={updateItemMutation.isPending}
                     >
                       <Plus className="h-4 w-4" />
                     </button>

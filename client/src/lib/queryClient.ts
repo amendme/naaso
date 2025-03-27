@@ -1,5 +1,19 @@
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
 
+// Helper function to get or create a session ID
+const getOrCreateSessionId = (): string => {
+  const storageKey = 'naaso_session_id';
+  let sessionId = localStorage.getItem(storageKey);
+  
+  if (!sessionId) {
+    // Generate a random session ID if none exists
+    sessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    localStorage.setItem(storageKey, sessionId);
+  }
+  
+  return sessionId;
+};
+
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
     const text = (await res.text()) || res.statusText;
@@ -12,9 +26,14 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
+  const sessionId = getOrCreateSessionId();
+  
   const res = await fetch(url, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers: {
+      ...(data ? { "Content-Type": "application/json" } : {}),
+      "Authorization": sessionId
+    },
     body: data ? JSON.stringify(data) : undefined,
     credentials: "include",
   });
@@ -29,7 +48,12 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
+    const sessionId = getOrCreateSessionId();
+    
     const res = await fetch(queryKey[0] as string, {
+      headers: {
+        "Authorization": sessionId
+      },
       credentials: "include",
     });
 

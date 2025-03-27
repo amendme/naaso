@@ -18,9 +18,12 @@ interface CartState {
   getSubtotal: () => number;
 }
 
+type SetState = (partial: Partial<CartState> | ((state: CartState) => Partial<CartState>), replace?: boolean) => void;
+type GetState = () => CartState;
+
 export const useCart = create<CartState>()(
   persist(
-    (set, get) => ({
+    (set: SetState, get: GetState) => ({
       items: [],
       isLoading: false,
       isSyncing: false,
@@ -29,8 +32,7 @@ export const useCart = create<CartState>()(
       fetchCart: async () => {
         set({ isLoading: true, error: null });
         try {
-          const response = await fetch('/api/cart');
-          if (!response.ok) throw new Error('Failed to fetch cart');
+          const response = await apiRequest('GET', '/api/cart', undefined);
           const data = await response.json();
           set({ items: data, isLoading: false });
         } catch (error) {
@@ -38,7 +40,7 @@ export const useCart = create<CartState>()(
         }
       },
       
-      addToCart: async (productId, quantity) => {
+      addToCart: async (productId: number, quantity: number) => {
         set({ isSyncing: true, error: null });
         try {
           await apiRequest('POST', '/api/cart', { productId, quantity });
@@ -50,7 +52,7 @@ export const useCart = create<CartState>()(
         }
       },
       
-      updateQuantity: async (id, quantity) => {
+      updateQuantity: async (id: number, quantity: number) => {
         if (quantity < 1) return;
         set({ isSyncing: true, error: null });
         try {
@@ -63,7 +65,7 @@ export const useCart = create<CartState>()(
         }
       },
       
-      removeItem: async (id) => {
+      removeItem: async (id: number) => {
         set({ isSyncing: true, error: null });
         try {
           await apiRequest('DELETE', `/api/cart/${id}`, undefined);
@@ -87,11 +89,11 @@ export const useCart = create<CartState>()(
       },
       
       getItemCount: () => {
-        return get().items.reduce((count, item) => count + item.quantity, 0);
+        return get().items.reduce((count: number, item: CartItemType) => count + item.quantity, 0);
       },
       
       getSubtotal: () => {
-        return get().items.reduce((total, item) => total + (item.price * item.quantity), 0);
+        return get().items.reduce((total: number, item: CartItemType) => total + (item.price * item.quantity), 0);
       },
     }),
     {
