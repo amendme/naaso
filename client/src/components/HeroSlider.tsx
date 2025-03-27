@@ -87,11 +87,11 @@ const HeroSlider = () => {
           <div className="max-w-xl">
             <h1 className="text-5xl md:text-6xl font-display font-bold text-white leading-tight mb-4">Pure Nature, Direct to You</h1>
             <p className="text-xl text-white mb-8">Organic honey, fruits, and village products from our family farm to your table.</p>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 items-center">
               <Link href="/products">
-                <a className="bg-secondary hover:bg-opacity-90 text-white font-medium px-6 py-3 rounded-lg shadow-lg transition duration-300">Shop Now</a>
+                <span className="bg-secondary hover:bg-opacity-90 text-white font-medium px-6 py-3 rounded-lg shadow-lg transition duration-300 cursor-pointer inline-block">Shop Now</span>
               </Link>
-              <a href="#our-story" className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-medium px-6 py-3 rounded-lg shadow-lg backdrop-filter backdrop-blur-sm transition duration-300">Our Story</a>
+              <span onClick={() => document.getElementById('our-story')?.scrollIntoView({behavior: 'smooth'})} className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-medium px-6 py-3 rounded-lg shadow-lg backdrop-filter backdrop-blur-sm transition duration-300 cursor-pointer inline-block">Our Story</span>
             </div>
           </div>
         </div>

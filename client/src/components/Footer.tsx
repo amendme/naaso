@@ -25,11 +25,11 @@ const Footer = () => {
           <div>
             <h4 className="font-medium text-lg mb-4">Quick Links</h4>
             <ul className="space-y-2">
-              <li><Link href="/"><a className="hover:text-secondary transition duration-300">Home</a></Link></li>
-              <li><Link href="/products"><a className="hover:text-secondary transition duration-300">Products</a></Link></li>
-              <li><Link href="/#our-story"><a className="hover:text-secondary transition duration-300">Our Story</a></Link></li>
-              <li><Link href="/blog"><a className="hover:text-secondary transition duration-300">Blog</a></Link></li>
-              <li><Link href="/faq"><a className="hover:text-secondary transition duration-300">FAQ</a></Link></li>
+              <li><Link href="/"><span className="hover:text-secondary transition duration-300 cursor-pointer">Home</span></Link></li>
+              <li><Link href="/products"><span className="hover:text-secondary transition duration-300 cursor-pointer">Products</span></Link></li>
+              <li><Link href="/#our-story"><span className="hover:text-secondary transition duration-300 cursor-pointer">Our Story</span></Link></li>
+              <li><Link href="/blog"><span className="hover:text-secondary transition duration-300 cursor-pointer">Blog</span></Link></li>
+              <li><Link href="/faq"><span className="hover:text-secondary transition duration-300 cursor-pointer">FAQ</span></Link></li>
             </ul>
           </div>
           
@@ -70,13 +70,8 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-gray-700 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-gray-700 mt-12 pt-8 flex justify-center items-center">
           <p>© 2025 Naaso. All rights reserved.</p>
-          <div className="mt-4 md:mt-0">
-            <Link href="/privacy"><a className="text-sm hover:text-secondary transition duration-300 mr-4">Privacy Policy</a></Link>
-            <Link href="/terms"><a className="text-sm hover:text-secondary transition duration-300 mr-4">Terms of Service</a></Link>
-            <Link href="/shipping"><a className="text-sm hover:text-secondary transition duration-300">Shipping Information</a></Link>
-          </div>
         </div>
       </div>
     </footer>

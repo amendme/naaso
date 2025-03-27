@@ -92,7 +92,7 @@ const Cart = () => {
           <p className="text-gray-600 mb-6">Looks like you haven't added any products to your cart yet.</p>
           <Button asChild>
             <Link href="/products">
-              <a>Start Shopping</a>
+              <span className="cursor-pointer">Start Shopping</span>
             </Link>
           </Button>
         </div>
@@ -125,9 +125,9 @@ const Cart = () => {
                     </div>
                     <div className="ml-4">
                       <Link href={`/products/${item.productId}`}>
-                        <a className="font-medium text-gray-900 hover:text-primary transition-colors">
+                        <span className="font-medium text-gray-900 hover:text-primary transition-colors cursor-pointer">
                           {item.name}
-                        </a>
+                        </span>
                       </Link>
                       <button 
                         className="text-sm text-red-500 flex items-center mt-1 hover:text-red-700"
@@ -215,9 +215,9 @@ const Cart = () => {
               
               <div className="mt-6">
                 <Link href="/products">
-                  <a className="text-primary hover:underline text-sm flex justify-center">
+                  <span className="text-primary hover:underline text-sm flex justify-center cursor-pointer">
                     Continue Shopping
-                  </a>
+                  </span>
                 </Link>
               </div>
             </div>
