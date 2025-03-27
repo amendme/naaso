@@ -83,19 +83,19 @@ const Dashboard = () => {
         <TabsContent value="products">
           <ProductsTab token={token!} />
         </TabsContent>
-        
+
         <TabsContent value="orders">
           <OrdersTab token={token!} />
         </TabsContent>
-        
+
         <TabsContent value="blog">
           <BlogTab token={token!} />
         </TabsContent>
-        
+
         <TabsContent value="media">
           <MediaTab token={token!} />
         </TabsContent>
-        
+
         <TabsContent value="settings">
           <SettingsTab token={token!} />
         </TabsContent>
@@ -453,12 +453,12 @@ const MediaTab = ({ token }: { token: string }) => {
         },
         body: fileData
       });
-      
+
       if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || 'Failed to upload file');
       }
-      
+
       return await response.json();
     },
     onSuccess: () => {
@@ -589,7 +589,7 @@ const SettingsTab = ({ token }: { token: string }) => {
   return (
     <div>
       <h2 className="text-2xl font-bold mb-6">Settings</h2>
-      
+
       <Card>
         <CardHeader>
           <CardTitle>Admin Account</CardTitle>
