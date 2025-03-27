@@ -194,8 +194,15 @@ const ProductsTab = ({ token }: { token: string }) => {
   const productsQuery = useQuery({
     queryKey: ['/api/products'],
     queryFn: async () => {
-      const response = await apiRequest('GET', '/api/products');
-      return response || [];
+      const response = await fetch('/api/products', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
+      }
+      return response.json();
     },
   });
 
