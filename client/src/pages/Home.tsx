@@ -63,12 +63,12 @@ const Home = () => {
       {/* Our Story Section */}
       <VideoSection 
         title="Our Story"
-        description="We are a family-run business dedicated to bringing the purest, organic products from our village to your home. For three generations, we've been cultivating our land using traditional methods passed down through the years. Our commitment to sustainable farming practices ensures that every product you purchase from Naaso is not only delicious but also good for you and the environment."
-        founderName="Aanya Sharma"
-        founderTitle="Founder, Naaso"
-        founderImage="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-1.2.1&auto=format&fit=crop&w=128&q=80"
-        videoThumbnail="https://images.unsplash.com/photo-1566385101042-1a0aa0c1268c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80"
-        videoUrl="https://www.youtube.com/embed/dQw4w9WgXcQ"
+        description="At Naaso, we are dedicated to preserving and sharing the rich tradition of Jumli Satu. For generations, our family has been cultivating and processing this nutritious multi-grain flour using time-honored methods passed down through the years. Embracing modern technology, we have transformed this tradition into a commercial venture while preserving its authentic taste and nutritional value. We take pride in bringing this heritage product from our village in Jumla directly to your family"
+        founderName="Devaki Rawal"
+        founderTitle="Co-founder, Naaso"
+        founderImage="/images/founder.jpg"
+        videoThumbnail="/images/story-thumbnail.jpg"
+        videoUrl="https://www.youtube.com/embed/OhHfrXGWBrQ"
       />
       
       {/* Testimonials Section */}

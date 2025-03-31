@@ -85,13 +85,16 @@ const HeroSlider = () => {
       <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center">
         <div className="container mx-auto px-4">
           <div className="max-w-xl">
-            <h1 className="text-5xl md:text-6xl font-display font-bold text-white leading-tight mb-4">Pure Nature, Direct to You</h1>
-            <p className="text-xl text-white mb-8">Organic honey, fruits, and village products from our family farm to your table.</p>
+            <h1 className="text-5xl md:text-6xl font-display font-bold text-white leading-tight mb-4">Taste the Tradition, Power the Future</h1>
+            <p className="text-xl text-white mb-8">Organic traditional Jumli Satu from our family to your family</p>
             <div className="flex flex-wrap gap-4 items-center">
               <Link href="/products">
-                <span className="bg-secondary hover:bg-opacity-90 text-white font-medium px-6 py-3 rounded-lg shadow-lg transition duration-300 cursor-pointer inline-block">Shop Now</span>
+                <span className="bg-[#3B5E55] text-white font-medium px-6 py-3 rounded-lg shadow-lg transition duration-300 cursor-pointer inline-block">Shop Now</span>
               </Link>
-              <span onClick={() => document.getElementById('our-story')?.scrollIntoView({behavior: 'smooth'})} className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white font-medium px-6 py-3 rounded-lg shadow-lg backdrop-filter backdrop-blur-sm transition duration-300 cursor-pointer inline-block">Our Story</span>
+              <span 
+                onClick={() => document.getElementById('our-story')?.scrollIntoView({behavior: 'smooth'})} 
+                className="bg-[#3B5E55] text-white font-medium px-6 py-3 rounded-lg shadow-lg backdrop-filter backdrop-blur-sm transition duration-300 cursor-pointer inline-block"
+              >Our Story</span>
             </div>
           </div>
         </div>

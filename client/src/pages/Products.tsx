@@ -140,8 +140,8 @@ const Products = () => {
                 className="mt-6"
               />
               <div className="flex justify-between mt-2 text-sm text-gray-600">
-                <span>${priceRange[0]}</span>
-                <span>${priceRange[1]}</span>
+                <span>NPR {priceRange[0]}</span>
+                <span>NPR {priceRange[1]}</span>
               </div>
             </div>
 

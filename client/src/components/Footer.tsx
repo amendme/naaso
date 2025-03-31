@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <h3 className="font-display text-2xl font-bold mb-4">Naaso</h3>
-            <p className="mb-4">Bringing pure, organic village products directly from our farm to your doorstep.</p>
+            <p className="mb-4">Bringing organic jumli jhauko satu from our home to your table.</p>
             <div className="flex space-x-4">
               <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-secondary transition duration-300">
                 <Instagram className="h-6 w-6" />
@@ -29,7 +29,6 @@ const Footer = () => {
               <li><Link href="/products"><span className="hover:text-secondary transition duration-300 cursor-pointer">Products</span></Link></li>
               <li><Link href="/#our-story"><span className="hover:text-secondary transition duration-300 cursor-pointer">Our Story</span></Link></li>
               <li><Link href="/blog"><span className="hover:text-secondary transition duration-300 cursor-pointer">Blog</span></Link></li>
-              <li><Link href="/faq"><span className="hover:text-secondary transition duration-300 cursor-pointer">FAQ</span></Link></li>
             </ul>
           </div>
           
@@ -38,31 +37,31 @@ const Footer = () => {
             <ul className="space-y-2">
               <li className="flex items-start">
                 <MapPin className="h-5 w-5 mt-1 mr-3" />
-                <span>Naaso Farm, Village Greenwood, Himalayan Foothills</span>
+                <span>Tatopnai-02, Dandibada Jumla</span>
               </li>
               <li className="flex items-center">
                 <Phone className="h-5 w-5 mr-3" />
-                <span>+91 98765 43210</span>
+                <span>+977 9840052734</span>
               </li>
               <li className="flex items-center">
                 <Mail className="h-5 w-5 mr-3" />
-                <span>hello@naaso.com</span>
+                <span>naasojumla@gmail.com</span>
               </li>
             </ul>
           </div>
           
           <div>
             <h4 className="font-medium text-lg mb-4">Newsletter</h4>
-            <p className="mb-4">Subscribe to receive updates on new products and blog posts.</p>
-            <form className="flex" onSubmit={(e) => e.preventDefault()}>
+            <p className="mb-4">Subscribe to get the latest updates and offers.</p>
+            <form className="flex">
               <input 
                 type="email" 
-                placeholder="Your email" 
-                className="flex-grow px-4 py-2 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-secondary text-gray-800"
+                placeholder="Your email address" 
+                className="flex-grow px-4 py-2 rounded-l-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-secondary"
               />
               <button 
-                type="submit" 
-                className="bg-secondary hover:bg-opacity-90 px-4 py-2 rounded-r-lg transition duration-300"
+                type="submit"
+                className="bg-[#3B5E55] text-white px-4 py-2 rounded-r-lg hover:bg-opacity-90 transition duration-300"
               >
                 <Send className="h-5 w-5" />
               </button>

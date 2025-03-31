@@ -116,7 +116,7 @@ const Cart = () => {
                   {/* Price */}
                   <div className="w-1/3 md:w-1/5 text-center md:text-center mb-2 md:mb-0">
                     <span className="md:hidden font-medium mr-1">Price:</span>
-                    ${item.price.toFixed(2)}
+                    NPR {item.price.toFixed(2)}
                   </div>
                   
                   {/* Quantity */}
@@ -139,7 +139,7 @@ const Cart = () => {
                   {/* Total */}
                   <div className="w-1/3 md:w-1/5 text-right md:text-right font-medium">
                     <span className="md:hidden font-medium mr-1">Total:</span>
-                    ${(item.price * item.quantity).toFixed(2)}
+                    NPR {(item.price * item.quantity).toFixed(2)}
                   </div>
                 </div>
               ))}
@@ -154,26 +154,26 @@ const Cart = () => {
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-medium">${subtotal.toFixed(2)}</span>
+                  <span className="font-medium">NPR {subtotal.toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
                   {shippingCost === 0 ? (
                     <span className="text-green-600">Free</span>
                   ) : (
-                    <span className="font-medium">${shippingCost.toFixed(2)}</span>
+                    <span className="font-medium">NPR {shippingCost.toFixed(2)}</span>
                   )}
                 </div>
                 {shippingCost > 0 && (
                   <div className="text-sm text-gray-500 flex items-start">
                     <AlertCircle className="h-4 w-4 mr-1 flex-shrink-0 mt-0.5" />
-                    <span>Free shipping on orders over $50</span>
+                    <span>Free shipping on orders over NPR 50</span>
                   </div>
                 )}
                 <Separator />
                 <div className="flex justify-between">
                   <span className="font-bold">Total</span>
-                  <span className="font-bold text-primary text-xl">${total.toFixed(2)}</span>
+                  <span className="font-bold text-primary text-xl">NPR {total.toFixed(2)}</span>
                 </div>
               </div>
               
