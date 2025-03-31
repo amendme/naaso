@@ -14,6 +14,7 @@ export default defineConfig({
     runtimeErrorOverlay(),
     themePlugin()
   ],
+  root: path.resolve(__dirname, "client"),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "client", "src"),
@@ -22,13 +23,8 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: "dist",
-    emptyOutDir: true,
-    rollupOptions: {
-      input: {
-        main: path.resolve(__dirname, 'client/index.html')
-      }
-    }
+    outDir: path.resolve(__dirname, "dist"),
+    emptyOutDir: true
   },
   server: {
     port: process.env.PORT ? parseInt(process.env.PORT) : 3000,
